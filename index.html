@@ -115,7 +115,7 @@
             <label for="freq" class="form-label">Wi-Fi Frequency (MHz)</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-wifi"></i></span>
-              <input type="number" class="form-control" id="freq" placeholder="e.g. 2400" required>
+              <input type="number" class="form-control" id="freq" placeholder="e.g. 2400" min="2400" max="7200" required>
             </div>
             <div class="form-text">Common values: 2400-2500 MHz (2.4 GHz) or 5000-5900 MHz (5 GHz)</div>
           </div>
@@ -123,7 +123,7 @@
             <label for="rssi" class="form-label">Signal Strength (RSSI in dBm)</label>
             <div class="input-group">
               <span class="input-group-text"><i class="bi bi-signal"></i></span>
-              <input type="number" class="form-control" id="rssi" placeholder="e.g. -60" required>
+              <input type="number" class="form-control" id="rssi" placeholder="e.g. -60" min="-100" max="-30" required>
             </div>
             <div class="form-text">Typical range: -30 dBm (very strong) to -90 dBm (very weak)</div>
           </div>

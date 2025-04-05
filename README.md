@@ -38,31 +38,6 @@ Where:
 
 3. Click "Calculate Distance" to see the results
 
-## Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/wifidist.git
-```
-
-2. Open `index.html` in a web browser
-
-No additional setup is required as the project uses CDN-hosted dependencies.
-
-## Dependencies
-
-- Bootstrap 5.3.3
-- Bootstrap Icons 1.11.3
-- jQuery 3.6.0
-
-## Browser Support
-
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-- Opera
-
 ## Contributing
 
 1. Fork the repository
