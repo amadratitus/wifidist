@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WiFi Distance Estimator</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/png" href="favicon.png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    .navbar:not(.footer) {
+      background-color: var(--bs-primary) !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .navbar:not(.footer) .navbar-brand img {
+      filter: brightness(0) invert(1);
+    }
+    .navbar:not(.footer) .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      transition: all 0.3s ease;
+    }
+    .navbar:not(.footer) .nav-link:hover {
+      color: #fff !important;
+      transform: translateY(-1px);
+    }
+    .card {
+      border: none;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card-header {
+      border-bottom: none;
+    }
+    .form-control:focus {
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .modal-content {
+      border: none;
+      border-radius: 15px;
+    }
+    .modal-header {
+      border-bottom: none;
+    }
+    .modal-footer {
+      border-top: none;
+    }
+    .footer {
+      background: none;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+
+<!-- Navbar -->
+<nav class="navbar sticky-top navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="wifidist.png" alt="WiFiDist" width="30" height="24" class="me-2">
+      <span class="text-white fw-bold">WiFiDist</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active d-flex align-items-center" href="index.html">
+            <i class="bi bi-house-door me-1"></i> Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-info-circle me-1"></i> About
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center" href="#">
+            <i class="bi bi-envelope me-1"></i> Contact
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-center align-items-center pt-3 pb-5">
+    <div class="card shadow rounded-4" style="width: 500px;">
+      <div class="card-header bg-primary text-white">
+        <h5 class="mb-0 d-flex align-items-center justify-content-between">
+          <span>📶 WiFi Distance Estimator</span>
+          <i class="bi bi-info-circle" 
+             data-bs-toggle="tooltip" 
+             data-bs-placement="left"
+             title="This tool estimates the distance between you and a WiFi access point using the signal frequency and RSSI (Received Signal Strength Indicator). For best results, use values from your device's WiFi settings or a network analyzer app."></i>
+        </h5>
+      </div>
+      <div class="card-body">
+        <form id="distanceForm">
+          <div class="mb-3">
+            <label for="freq" class="form-label">Wi-Fi Frequency (MHz)</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-wifi"></i></span>
+              <input type="number" class="form-control" id="freq" placeholder="e.g. 2400" required>
+            </div>
+            <div class="form-text">Common values: 2400-2500 MHz (2.4 GHz) or 5000-5900 MHz (5 GHz)</div>
+          </div>
+          <div class="mb-3">
+            <label for="rssi" class="form-label">Signal Strength (RSSI in dBm)</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="bi bi-signal"></i></span>
+              <input type="number" class="form-control" id="rssi" placeholder="e.g. -60" required>
+            </div>
+            <div class="form-text">Typical range: -30 dBm (very strong) to -90 dBm (very weak)</div>
+          </div>
+          <button type="submit" class="btn btn-success w-100">
+            <i class="bi bi-calculator me-2"></i> Calculate Distance
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Results Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="resultModalLabel">
+          <i class="bi bi-rulers me-2"></i>Distance Estimation Results
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="result">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          <i class="bi bi-x-lg me-1"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<nav class="navbar fixed-bottom footer">
+  <div class="container">
+    <div class="col-12 text-center">
+      <small class="text-muted d-block">&copy; <span id="copy_year"></span> WiFiDist</small>
+      <small class="text-muted d-block">Powered By <a href="https://eirocsystems.com/" class="text-decoration-none" target="_blank">Eiroc Systems</a></small>
+    </div>
+  </div>
+</nav>
+<!-- End Footer -->
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="main.js"></script>
+<script>
+  // Initialize all tooltips
+  document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  });
+</script>
+
+</body>
+</html>
